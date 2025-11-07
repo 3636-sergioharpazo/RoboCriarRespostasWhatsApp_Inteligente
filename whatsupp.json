@@ -1,0 +1,472 @@
+{
+  "name": "whatsupp",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "webhook",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cc69162c-6b86-4d16-8b74-02701a7f14e7",
+      "name": "Webhook",
+      "webhookId": "e083ccb7-4b94-446f-a814-3d192d5a9100"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c698e601-337e-4c3c-ad5d-2f74d19c5df4",
+              "name": "session",
+              "value": "={{ $json.body.session }}",
+              "type": "string"
+            },
+            {
+              "id": "a76b252f-15aa-45d1-8f32-1e5bae353e5f",
+              "name": "chatId",
+              "value": "={{ $json.body.payload.from }}",
+              "type": "string"
+            },
+            {
+              "id": "3ebfb818-b304-4b66-8044-a4ea739afe9e",
+              "name": "pushName",
+              "value": "={{ $json.body.payload._data.Info.PushName }}",
+              "type": "string"
+            },
+            {
+              "id": "4e578362-5856-43d5-9f4f-6f88f528e4ce",
+              "name": "payload_id",
+              "value": "={{ $json.body.payload.id }}",
+              "type": "string"
+            },
+            {
+              "id": "3e7f8531-169b-4c76-b6d9-222450898e81",
+              "name": "event",
+              "value": "={{ $json.body.event }}",
+              "type": "string"
+            },
+            {
+              "id": "ca5674e6-72d1-44e7-8832-851649757276",
+              "name": "message",
+              "value": "={{ $json.body.payload.body }}",
+              "type": "string"
+            },
+            {
+              "id": "45d109ed-2947-495a-a62d-33e6263c2896",
+              "name": "fromMe",
+              "value": "={{ $json.body.payload.fromMe }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c4f43f16-6295-48e7-856a-514df4b2dfca",
+      "name": "Dados"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.event }}",
+                    "rightValue": "=message",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c0fe8a03-7d70-4f8b-ae2d-c56c504a2f02"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "e9dc757f-9a68-4081-829d-e6e81438625b",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.event }}",
+        "options": {
+          "systemMessage": "=Você é o assistente virtual oficial da empresa **Smart Software**.\n\n🧠 SUA FUNÇÃO:\nAtender clientes e interessados, identificar o tipo de negócio e recomendar o sistema mais adequado, mostrando apenas as soluções relevantes.  \nSempre que possível, use o nome da pessoa (ex: {{$json.pushName }}).  \nSe o nome não estiver disponível, pergunte gentilmente: “Qual é o seu nome?”  \nMantenha sempre uma comunicação simpática, profissional e direta.\n\n---\n\n🏢 SOBRE A EMPRESA:\nA **Smart Software** cria e desenvolve programas e sistemas inteligentes sob medida, com foco em **automação, eficiência e tecnologia moderna**.  \nOferecemos soluções completas que ajudam empresas a crescer, otimizar processos e oferecer experiências digitais personalizadas.\n\n---\n\n📦 SISTEMAS DISPONÍVEIS:\n\n🍖 **Sistema de Churrascaria**\n🔹 Gerenciamento de pedidos  \n🔹 Controle de consumo por mesa  \n🔹 Relatórios detalhados de vendas  \n🔹 Integração com impressoras térmicas  \n🔹 Emissão de comandas digitais  \n🔗 Demonstração: https://youtube.com/watch?v=PtMgcjHcj0M  \n\n---\n\n🥩 **Sistema de Churrascaria (Versão Avançada)**\n🔹 Gerenciamento de reservas  \n🔹 Cardápio digital interativo  \n🔹 Organização eficiente para melhor experiência dos clientes  \n\n---\n\n🍕 **Sistema de Pizzaria**\n🔹 Gerenciamento de pedidos, cardápios e entregas  \n🔹 Integração com sistemas de delivery  \n🔹 Relatórios de vendas e estoque  \n\n---\n\n⏰ **Sistema de Ponto**\n🔹 Registro de ponto eletrônico  \n🔹 Relatórios completos de jornada  \n🔹 Cálculo automático de horas extras  \n🔹 Integração com folha de pagamento  \n🔹 Acesso via web e mobile  \n🔗 Demonstração: https://youtu.be/OzSMIMrfUB4  \n\n---\n\n📅 **Sistema de Agendamento**\n🔹 Marcação de horários online  \n🔹 Notificações automáticas por WhatsApp  \n🔹 Controle de agenda em tempo real  \n🔹 Gestão de clientes e serviços  \n🔹 Relatórios de atendimentos  \n🔗 Demonstração: https://youtu.be/9tjseqBVRBE  \n\n---\n\n📚 **Sistema de Ensino**\n🔹 Plataforma educacional moderna para cursos online e treinamentos  \n🔹 Ideal para escolas, professores e alunos  \n🔗 Demonstração: https://youtu.be/0pPl2BwqGGo  \n\n---\n\n🤖 **Sistema de Automação**\n🔹 Automação de processos repetitivos  \n🔹 Controle remoto de dispositivos  \n🔹 Integração com IA para otimização  \n🔹 Relatórios inteligentes  \n🔹 Personalização para qualquer setor  \n🔗 Demonstração: https://youtube.com/watch?v=PtMgcjHcj0M  \n\n---\n\n🎯 **INSTRUÇÕES DE ATENDIMENTO:**\n1. Analise o que o cliente diz e **identifique o tipo de negócio ou necessidade**.  \n   - Exemplo:\n     - “Tenho um restaurante” → Recomendar **Sistema de Churrascaria**  \n     - “Sou pizzaria” → Recomendar **Sistema de Pizzaria**  \n     - “Preciso registrar ponto dos funcionários” → Recomendar **Sistema de Ponto**  \n     - “Quero marcar atendimentos” → Recomendar **Sistema de Agendamento**  \n     - “Dou aulas / tenho escola” → Recomendar **Sistema de Ensino**  \n     - “Quero automatizar tarefas” → Recomendar **Sistema de Automação**\n\n2. Mostre **apenas os sistemas adequados** à necessidade do usuário, com o link de demonstração correspondente.\n\n3. Se o cliente pedir “todos os sistemas”, envie a lista completa.\n\n4. Se o cliente pedir um **vídeo ou demonstração**, envie o link apropriado.\n\n5. Sempre use uma saudação amigável e o nome do usuário quando possível.\n\n---\n\n💬 **Exemplo de resposta automática:**\n> Olá ! {{ $json.pushName }}👋 Que bom falar com você.  \n> A **Smart Software** desenvolve sistemas sob medida que ajudam empresas a crescer e automatizar processos.  \n> Pelo que entendi, seu negócio é uma pizzaria 🍕 — o sistema ideal para você é o **Sistema de Pizzaria**, que gerencia pedidos, cardápios, entregas e relatórios.  \n> Quer ver a demonstração? 👉 https://youtube.com/watch?v=PtMgcjHcj0M\n\n---\n\n🧩 **Se o cliente não especificar o tipo de negócio**, pergunte:\n> “Poderia me contar qual é o seu tipo de negócio ou o que você gostaria de automatizar? Assim posso te indicar o sistema ideal da Smart Software.”\n\n---\n\n📌 **Objetivo Final:**\nO agente deve agir como um consultor virtual da Smart Software, entendendo as necessidades do usuário e oferecendo o sistema certo com base nas opções disponíveis, enviando os links de demonstração correspondentes conforme a necessidade.\n {{ $json.pushName }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        624,
+        0
+      ],
+      "id": "0e2e9938-b412-4ba4-8b1f-b376e8650b7d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        496,
+        208
+      ],
+      "id": "f5d4f2ec-cbf2-40c2-a526-2a7638236bf4",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FWDQuJDr4pfA5AoI",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Dados').item.json.chatId }}",
+        "sessionTTL": 3600,
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        640,
+        208
+      ],
+      "id": "24374819-9f80-4640-a19e-856ebe262eff",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "JBOAiHqRwSsoSvzB",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Seen",
+        "session": "={{ $('Dados').item.json.session }}",
+        "chatId": "={{ $('Dados').item.json.chatId }}",
+        "messageId": "={{ $('Dados').item.json.payload_id }}",
+        "participant": "",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-waha.WAHA",
+      "typeVersion": 202411,
+      "position": [
+        976,
+        0
+      ],
+      "id": "b0eda74a-b870-4f12-84b2-862746b985dd",
+      "name": "Send Seen",
+      "credentials": {
+        "wahaApi": {
+          "id": "fy3XFmS265DixvqL",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Text",
+        "session": "={{ $('Dados').item.json.session }}",
+        "chatId": "={{ $('Dados').item.json.chatId }}",
+        "text": "={{ $('AI Agent').item.json.output }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-waha.WAHA",
+      "typeVersion": 202411,
+      "position": [
+        1184,
+        0
+      ],
+      "id": "79f42fc1-20d5-46a3-a7c5-30f0b2995f38",
+      "name": "Send a text message",
+      "credentials": {
+        "wahaApi": {
+          "id": "fy3XFmS265DixvqL",
+          "name": "WAHA account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "WAHA/2025.10.4",
+            "x-webhook-request-id": "01K8Y174YBK0ZKPMAH430TPV8K",
+            "x-webhook-timestamp": "1761944507338",
+            "content-length": "2412",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "host": "host.docker.internal:5678",
+            "connection": "keep-alive"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id": "evt_01k8y174y95tvzabvrmc85jmmw",
+            "timestamp": 1761944507338,
+            "event": "message",
+            "session": "default",
+            "metadata": {},
+            "me": {
+              "id": "5511939281325@c.us",
+              "pushName": "Antonio Sergio",
+              "lid": "244143792066634@lid",
+              "jid": "5511939281325:2@s.whatsapp.net"
+            },
+            "payload": {
+              "id": "false_5511961609288@c.us_3A3B7537FE4CFF1A7DF5",
+              "timestamp": 1761944509,
+              "from": "5511961609288@c.us",
+              "fromMe": false,
+              "source": "app",
+              "body": "Oi",
+              "to": null,
+              "participant": null,
+              "hasMedia": false,
+              "media": null,
+              "ack": 2,
+              "ackName": "DEVICE",
+              "replyTo": null,
+              "_data": {
+                "Info": {
+                  "Chat": "5511961609288@s.whatsapp.net",
+                  "Sender": "5511961609288@s.whatsapp.net",
+                  "IsFromMe": false,
+                  "IsGroup": false,
+                  "AddressingMode": "",
+                  "SenderAlt": "25521299677348@lid",
+                  "RecipientAlt": "",
+                  "BroadcastListOwner": "",
+                  "BroadcastRecipients": null,
+                  "ID": "3A3B7537FE4CFF1A7DF5",
+                  "ServerID": 0,
+                  "Type": "text",
+                  "PushName": ".",
+                  "Timestamp": "2025-10-31T21:01:49Z",
+                  "Category": "",
+                  "Multicast": false,
+                  "MediaType": "",
+                  "Edit": "",
+                  "MsgBotInfo": {
+                    "EditType": "",
+                    "EditTargetID": "",
+                    "EditSenderTimestampMS": "0001-01-01T00:00:00Z"
+                  },
+                  "MsgMetaInfo": {
+                    "TargetID": "",
+                    "TargetSender": "",
+                    "TargetChat": "",
+                    "DeprecatedLIDSession": null,
+                    "ThreadMessageID": "",
+                    "ThreadMessageSenderJID": ""
+                  },
+                  "VerifiedName": null,
+                  "DeviceSentMeta": null
+                },
+                "Message": {
+                  "extendedTextMessage": {
+                    "text": "Oi",
+                    "contextInfo": {
+                      "expiration": 604800,
+                      "ephemeralSettingTimestamp": 1746905518,
+                      "disappearingMode": {
+                        "initiator": 1,
+                        "trigger": 2,
+                        "initiatedByMe": true
+                      }
+                    }
+                  },
+                  "messageContextInfo": {
+                    "deviceListMetadata": {
+                      "senderTimestamp": 1761944085,
+                      "recipientKeyHash": "k1QFFgKT3if2qA==",
+                      "recipientTimestamp": 1760791385
+                    },
+                    "deviceListMetadataVersion": 2,
+                    "messageSecret": "y2mbVDpZjA1YIVHlNGR+AO/nTLwnmdqWo7YuEvbrLAg="
+                  }
+                },
+                "IsEphemeral": false,
+                "IsViewOnce": false,
+                "IsViewOnceV2": false,
+                "IsViewOnceV2Extension": false,
+                "IsDocumentWithCaption": false,
+                "IsLottieSticker": false,
+                "IsBotInvoke": false,
+                "IsEdit": false,
+                "SourceWebMsg": null,
+                "UnavailableRequestID": "",
+                "RetryCount": 0,
+                "NewsletterMeta": null,
+                "RawMessage": {
+                  "extendedTextMessage": {
+                    "text": "Oi",
+                    "contextInfo": {
+                      "expiration": 604800,
+                      "ephemeralSettingTimestamp": 1746905518,
+                      "disappearingMode": {
+                        "initiator": 1,
+                        "trigger": 2,
+                        "initiatedByMe": true
+                      }
+                    }
+                  },
+                  "messageContextInfo": {
+                    "deviceListMetadata": {
+                      "senderTimestamp": 1761944085,
+                      "recipientKeyHash": "k1QFFgKT3if2qA==",
+                      "recipientTimestamp": 1760791385
+                    },
+                    "deviceListMetadataVersion": 2,
+                    "messageSecret": "y2mbVDpZjA1YIVHlNGR+AO/nTLwnmdqWo7YuEvbrLAg="
+                  }
+                },
+                "Status": 3
+              }
+            },
+            "environment": {
+              "version": "2025.10.4",
+              "engine": "GOWS",
+              "tier": "CORE",
+              "browser": null
+            }
+          },
+          "webhookUrl": "http://host.docker.internal:5678/webhook-test/webhook",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send Seen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Seen": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5f464057-c104-4af4-a645-570fe09b9b06",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fe73364ae36bf7ac1d76a5cf5ea6bd6a093a035ade5bc80ea342e9bc304a094a"
+  },
+  "id": "XSM4D7alxCtdLivT",
+  "tags": []
+}

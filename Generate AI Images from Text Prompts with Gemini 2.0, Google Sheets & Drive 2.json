@@ -1,0 +1,185 @@
+{
+  "name": "Generate AI Images from Text Prompts with Gemini 2.0, Google Sheets & Drive 2",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=return [\n  {\n    json: {\n      title: $json[\"Input Title\"],\n      post: \"A close-up of a woman's hand with almond-shaped nails painted in deep crimson red, featuring a glossy finish that reflects soft highlights. The hand rests gracefully on the edge of a porcelain teacup filled with steaming tea, the fingers slightly curled in a relaxed, natural pose. Warm golden hour sunlight streams through a nearby window, casting gentle shadows and a cozy, intimate atmosphere. The background features blurred tones of cream and amber, enhancing the warmth and elegance of the scene. Aspect Ratio: 9:16\"\n    }\n  }\n];\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "id": "264b14b6-1dc4-4ea1-a6e1-7e7b23c8df7b",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        992,
+        416
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst updatedItems = items.map((item) => {\n  if (\n    item.json &&\n    item.json.output &&\n    typeof item.json.output.post === \"string\"\n  ) {\n    item.json.output.post = item.json.output.post.replace(/\\n/g, \"\\\\n\");\n  }\n  return item;\n});\nreturn updatedItems;"
+      },
+      "id": "ba3e3f4a-f1c0-4ff7-8d0a-170d309b1cec",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1328,
+        416
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"title\": { \"type\": \"string\" },\n    \"post\":  { \"type\": \"string\" }\n  },\n  \"required\": [\"title\",\"post\"],\n  \"additionalProperties\": false\n}\n"
+      },
+      "id": "cbb6d317-fb74-4cf5-a362-5e88ab5e031e",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "position": [
+        1120,
+        592
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "ee5c4ab4-0a9e-43e7-9e39-754b7ed63dcf",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "position": [
+        976,
+        592
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "SFbQgXUwYcgqDn1s",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.0-flash-preview-image-generation",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.0-flash-preview-image-generation"
+        },
+        "prompt": "={{ $('When chat message received').item.json.chatInput }}",
+        "options": {}
+      },
+      "id": "84fa3ea0-77c4-4a50-8392-cb221d35c413",
+      "name": "Generate Image with Gemini",
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "position": [
+        1520,
+        416
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "SFbQgXUwYcgqDn1s",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "allowedFilesMimeTypes": "*"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        432
+      ],
+      "id": "286d941a-b83c-4ae4-9813-b91dbcf710e3",
+      "name": "When chat message received",
+      "webhookId": "81c6de64-2f0b-4882-b0c4-84461ae491a7"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Generate Image with Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Image with Gemini": {
+      "main": [
+        []
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8435c106-bedf-44f0-9acc-0a69a5adc0d4",
+  "meta": {
+    "templateId": "7544",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "095932864cf2cb5320c616461163230365f90c2a47f9d0403c4e72a15958e277"
+  },
+  "id": "cfsYe5U6rJYUa7qV",
+  "tags": []
+}
